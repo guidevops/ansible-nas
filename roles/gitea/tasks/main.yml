@@ -19,9 +19,9 @@
           - "{{ gitea_data_directory }}/mysql:/var/lib/mysql:rw"
         env:
           MYSQL_DATABASE: "gitea"
-          MYSQL_USER: "gitea"
-          MYSQL_PASSWORD: "gitea"
-          MYSQL_ROOT_PASSWORD: "gitea"
+          MYSQL_USER: "{{ gitea_mysql_user_name }}"
+          MYSQL_PASSWORD: "{{ gitea_mysql_user_password }}"
+          MYSQL_ROOT_PASSWORD: "{{ gitea_mysql_root_password }}"
         restart_policy: unless-stopped
         memory: "{{ gitea_mysql_memory }}"
 
@@ -58,7 +58,7 @@
           traefik.http.routers.gitea.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.gitea.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.gitea.loadbalancer.server.port: "3000"
-  when: gitea_enabled is true
+  when: gitea_enabled|default(false)|bool == true
 
 - name: Stop Gitea
   block:
@@ -71,4 +71,4 @@
       docker_container:
         name: "{{ gitea_mysql_container_name }}"
         state: absent
-  when: gitea_enabled is false
+  when: gitea_enabled|default(false)|bool == false
