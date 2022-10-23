@@ -36,7 +36,7 @@
           - "{{ gitea_data_directory }}/gitea:/data:rw"
         ports:
           - "{{ gitea_port_http }}:3000"
-          - "{{ gitea_port_ssh }}:22"
+          - "{{ gitea_port_ssh }}:{{ gitea_port_ssh }}"
         env:
           DB_TYPE: "mysql"
           DB_HOST: "db:3306"
@@ -54,7 +54,7 @@
         labels:
           traefik.enable: "{{ gitea_available_externally | string }}"
           traefik.http.routers.gitea.rule: "Host(`{{ gitea_hostname }}.{{ ansible_nas_domain }}`)"
-          traefik.http.routers.gitea.tls.certresolver: "letsencrypt"
+          traefik.http.routers.gitea.tls.certresolver: "cloudflare"
           traefik.http.routers.gitea.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.gitea.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.gitea.loadbalancer.server.port: "3000"

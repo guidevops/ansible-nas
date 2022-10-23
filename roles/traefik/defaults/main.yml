@@ -5,6 +5,10 @@
 # You'll also need to map ports 80 and 443 from your router to your ansible-nas server, then enable the per-app "available_externally"
 # settings.
 traefik_enabled: false
+traefik_available_externally: false
+
+traefik_web_user: "ansible-nas"
+traefik_web_password: "ansible-nas"
 
 # directories
 traefik_data_directory: "{{ docker_home }}/traefik"
@@ -13,6 +17,8 @@ traefik_data_directory: "{{ docker_home }}/traefik"
 traefik_port_http: "80"
 traefik_port_https: "443"
 traefik_port_ui: "8083"
+traefik_hostname: "web"
+
 
 traefik_docker_image: traefik:latest
 traefik_log_level: "INFO"
@@ -20,7 +26,10 @@ traefik_log_level: "INFO"
 # find the relevant name and environment variables for your DNS provider at https://go-acme.github.io/lego/dns/
 traefik_dns_provider: cloudflare
 traefik_environment_variables:
-  CF_DNS_API_TOKEN: "abcdabcd123412341234"
+  CLOUDFLARE_DNS_API_TOKEN: "{{ cloudflare_token }}"
+  CF_DNS_API_TOKEN: "{{ cloudflare_token }}"
+  CLOUDFLARE_EMAIL: "{{ ansible_nas_email }}"
+
 
 # Ansible-NAS requests a wildcard certificate for your domain, so there should be no reason to have to use the staging
 # letsencrypt acme server. If you do want to flip between staging/production, you might need to stop Traefik and clear

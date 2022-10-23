@@ -27,3 +27,13 @@
     restart_policy: unless-stopped
     memory: "{{ traefik_memory }}"
     recreate: "{{ template_config is changed }}"
+    labels:
+      traefik.enable: "{{ traefik_available_externally }}"
+      traefik.http.middlewares.admin-auth.basicauth.users: "{{ traefik_web_user }}:{{ traefik_web_password }}"
+      traefik.http.routers.traefik.rule: "Host(`{{ traefik_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.traefik.tls.certresolver: "cloudflare"
+      traefik.http.routers.traefik.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.traefik.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.routers.traefik.middlewares: "admin-auth"
+      traefik.http.services.traefik.loadbalancer.server.port: "8080"      
+      traefik.http.routers.traefik.service: "api@internal"
