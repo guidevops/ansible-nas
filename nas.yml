@@ -309,6 +309,11 @@
         - piwigo
       when: (piwigo_enabled | default(False))
 
+    - role: pihole
+      tags:
+        - pihole
+      when: (pihole_enabled | default(False))
+
     - role: plex
       tags:
         - plex
@@ -414,6 +419,11 @@
         - transmission_with_openvpn
       when: (transmission_with_openvpn_enabled | default(False))
 
+    - role: trilium
+      tags:
+        - trilium
+      when: (trilium_enabled | default(False))
+      
     - role: ubooquity
       tags:
         - ubooquity

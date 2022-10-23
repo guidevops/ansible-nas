@@ -1,0 +1,28 @@
+---
+- name: Create trilium Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ trilium_data_directory }}"
+
+- name: trilium Docker Container
+  docker_container:
+    name: trilium
+    image: zadam/trilium
+    pull: true
+    volumes:
+      - '{{ trilium_data_directory }}:/home/node/trilium-data'
+    ports:
+      - "{{ trilium_port_http }}:8080"
+    env:
+      TRILIUM_DATA_DIR: "/home/node/trilium-data"
+    restart_policy: unless-stopped
+    memory: "{{ trilium_memory }}"
+    labels:
+      traefik.enable: "{{ trilium_available_externally }}"
+      traefik.http.routers.trilium.rule: "Host(`{{ trilium_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.trilium.tls.certresolver: "cloudflare"
+      traefik.http.routers.trilium.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.trilium.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.trilium.loadbalancer.server.port: "8080"
