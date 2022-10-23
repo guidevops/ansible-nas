@@ -1,0 +1,24 @@
+---
+gitea2_enabled: false
+gitea2_available_externally: false
+
+# directories
+gitea2_data_directory: "{{ docker_home }}/gitea2"
+
+# network
+gitea2_hostname: "gitea2"
+gitea2_port_http: "3001"
+gitea2_port_ssh: "222"
+
+# specs
+gitea2_memory: 1g
+gitea2_mysql_memory: 1g
+
+# docker
+gitea2_container_name: gitea2
+gitea2_mysql_container_name: gitea2-mysql
+
+# mysql config
+gitea2_mysql_user_name: 'gitea'
+gitea2_mysql_user_password: 'gitea'
+gitea2_mysql_root_password: 'gitea'
