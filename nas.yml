@@ -131,6 +131,10 @@
       tags:
         - gitea
 
+    - role: gitea2
+      tags:
+        - gitea2
+
     - role: gitlab
       tags:
         - gitlab
