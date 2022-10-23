@@ -1,0 +1,20 @@
+---
+pihole_enabled: false
+pihole_available_externally: "false"
+
+# directories
+pihole_config_directory: "{{ docker_home }}/pihole/config"
+pihole_dnsmasq_directory: "{{ docker_home }}/pihole/dnsmasq"
+
+# uid / gid
+pihole_user_id: "0"
+pihole_group_id: "0"
+
+pihole_password: 'pihole'
+
+# network
+pihole_port_http: "8812"
+pihole_hostname: "pihole"
+
+# specs
+pihole_memory: 1g
